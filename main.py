@@ -4,13 +4,13 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-# global variables
+
 api_key = os.getenv('API_KEY')
 bot_token = os.getenv('BOT_TOKEN')
 chat_id = os.getenv('CHAT_ID')
 
-threshold = 30000
-time_interval = 5 * 60  # in seconds
+threshold = 50000
+time_interval = 1 * 60  # in seconds
 
 
 #get bit coin price
@@ -42,8 +42,10 @@ def main():
         price = get_price()
         price_list.append(price)
         if price < threshold:
+            print('sending msg price drop alert..')
             send_msg(chat_id=chat_id, msg=f'BTC Price Drop Alert: {price}')
         if len(price_list) >= 6:
+            print('sending 6 btc prices..')
             send_msg(chat_id=chat_id, msg=price_list)
             price_list = []
         time.sleep(time_interval)
@@ -51,3 +53,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
